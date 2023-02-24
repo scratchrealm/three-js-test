@@ -1,9 +1,11 @@
 {
-  "name": "three-js-test",
+  "name": "vizor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist --no-history",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
@@ -15,6 +17,7 @@
     "buffer": "^6.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1",
     "three": "^0.150.0"
   },
   "devDependencies": {
@@ -26,6 +29,7 @@
     "eslint": "^8.32.0",
     "eslint-plugin-react": "^7.32.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "gh-pages": "^5.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"
   }
