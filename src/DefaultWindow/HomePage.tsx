@@ -12,6 +12,7 @@ const HomePage: FunctionComponent<Props> = ({width, height}) => {
     return (
         <div style={{margin: 20}}>
             <h1>Vizor</h1>
+            <p><a href="http://github.com/scratchrealm/vizor">http://github.com/scratchrealm/vizor</a></p>
             <Hyperlink onClick={() => {setPage({page: 'e1'})}}>Example 1</Hyperlink>
         </div>
     )
