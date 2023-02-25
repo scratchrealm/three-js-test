@@ -1,7 +1,7 @@
 Visualize solutions to PDEs on surfaces and in the plane.
 
 Live:
-https://scratchrealm.github.io/vizor
+https://scratchrealm.github.io/vizor/v1
 
 Use cases
 - [ ] Static scalar field on surface via cloud Figurl

@@ -9,7 +9,7 @@ type Props = {
 }
 
 const View: FunctionComponent<Props> = ({data, width, height}) => {
-    if (data.type === 'vizor.surface') {
+    if (data.type === 'vizor.Surface') {
         return <SurfaceView data={data} width={width} height={height} />
     }
     else return <div>Unexpected view type</div>
