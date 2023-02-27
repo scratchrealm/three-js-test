@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react";
-import { ViewData } from "../ViewData";
+import { SurfaceViewData } from "./SurfaceViewData";
 import SurfaceWidget from "./SurfaceWidget";
 
 type Props = {
-    data: ViewData
+    data: SurfaceViewData
     width: number
     height: number
 }

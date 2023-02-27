@@ -6,7 +6,7 @@ import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls
 type Props = {
     vertices: number[][]
     faces: number[][]
-    scalarData?: number[]
+    scalarData?: number[] | Uint8Array | Float32Array
     scalarRange?: [number, number]
     width: number
     height: number
@@ -20,11 +20,26 @@ const SurfaceWidget: FunctionComponent<Props> = ({vertices, faces, scalarData, s
         return renderer
     }, [])
 
+    const useVertexColors = scalarData ? true : false
+
     const surface = useMemo(() => {
         return surfaceMesh(
-            vertices, faces, scalarData, scalarRange
+            vertices, faces, {useVertexColors}
         )
-    }, [vertices, faces, scalarData, scalarRange])
+    }, [vertices, faces, useVertexColors]) // important that this does not depend on scalarData (which might be changing rapidly)
+
+    useEffect(() => {
+        if ((scalarData) && (scalarRange)) {
+            const color = new Float32Array(3 * vertices.length)
+            for (let i = 0; i < vertices.length; i++) {
+                const rgb = colorForValue((scalarData[i] - scalarRange[0]) / (scalarRange[1] - scalarRange[0]))
+                color[i * 3 + 0] = rgb[0]
+                color[i * 3 + 1] = rgb[1]
+                color[i * 3 + 2] = rgb[2]
+            }
+            surface.geometry.setAttribute('color', new THREE.BufferAttribute(color, 3))
+        }
+    }, [scalarData, scalarRange, surface, vertices.length])
 
     const boundingBox = useMemo(() => {
         const xmin = min(vertices.map(v => (v[0])))
@@ -99,7 +114,7 @@ const SurfaceWidget: FunctionComponent<Props> = ({vertices, faces, scalarData, s
         // controls.scaleFactor = 3
 
         return controls
-    }, [camera, container])
+    }, [camera, container, boundingBox.center])
 
     useEffect(() => {
         if (!controls) return
@@ -124,7 +139,7 @@ const SurfaceWidget: FunctionComponent<Props> = ({vertices, faces, scalarData, s
     )
 }
 
-const surfaceMesh = (vertices: number[][], faces: number[][], scalarData?: number[] | undefined, scalarRange?: [number, number]) => {
+const surfaceMesh = (vertices: number[][], faces: number[][], o: {useVertexColors: boolean}) => {
     // const material = new THREE.MeshPhongMaterial( {
     //     color: 'white',
     //     flatShading: true,
@@ -133,7 +148,7 @@ const surfaceMesh = (vertices: number[][], faces: number[][], scalarData?: numbe
     // })
     const material = new THREE.MeshLambertMaterial({
         side: THREE.DoubleSide,
-        vertexColors: scalarData ? true : false
+        vertexColors: o.useVertexColors
     })
 
     const geometry = new THREE.BufferGeometry()
@@ -151,17 +166,6 @@ const surfaceMesh = (vertices: number[][], faces: number[][], scalarData?: numbe
     geometry.setIndex( indices0 );
     geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices0, 3 ) )
     geometry.computeVertexNormals()
-
-    if ((scalarData) && (scalarRange)) {
-        const color = new Float32Array(3 * vertices.length)
-        for (let i = 0; i < vertices.length; i++) {
-            const rgb = colorForValue((scalarData[i] - scalarRange[0]) / (scalarRange[1] - scalarRange[0]))
-            color[i * 3 + 0] = rgb[0]
-            color[i * 3 + 1] = rgb[1]
-            color[i * 3 + 2] = rgb[2]
-        }
-        geometry.setAttribute('color', new THREE.BufferAttribute(color, 3))
-    }
 
     const obj = new THREE.Mesh( geometry, material )
     return obj

@@ -1,19 +1,12 @@
-import { isArrayOf, isEqualTo, isNumber, isString, optional, validateObject } from "@figurl/core-utils"
+import { isOneOf } from "@figurl/core-utils"
+import { DynamicSurfaceViewData, isDynamicSurfaceViewData } from "./DynamicSurfaceView/DynamicSurfaceViewData"
+import { isSurfaceViewData, SurfaceViewData } from "./SurfaceView/SurfaceViewData"
 
-export type ViewData = {
-    type: 'vizor.Surface'
-    vertices: number[][]
-    faces: number[][]
-    scalarData?: number[]
-    scalarRange?: [number, number]
-}
+export type ViewData = SurfaceViewData | DynamicSurfaceViewData
 
-export const isViewData = (x: any): x is ViewData => {
-    return validateObject(x, {
-        type: isEqualTo('vizor.Surface'),
-        vertices: () => (true),
-        faces: () => (true),
-        scalarData: optional(() => (true)),
-        scalarRange: optional(isArrayOf(isNumber))
-    })
-}
+export const isViewData = (x: any): x is ViewData => (
+    isOneOf([
+        isSurfaceViewData,
+        isDynamicSurfaceViewData
+    ])(x)
+)
