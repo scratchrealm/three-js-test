@@ -11,8 +11,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@figurl/core-utils": "^0.1.2",
     "@figurl/interface": "^0.1.19",
+    "@mui/icons-material": "^5.11.9",
+    "@mui/material": "^5.11.10",
     "@types/three": "^0.149.0",
     "buffer": "^6.0.3",
     "react": "^18.2.0",

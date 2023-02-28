@@ -102,7 +102,7 @@ const SurfaceWidget: FunctionComponent<Props> = ({vertices, faces, scalarData, s
 
         // TrackballControls: working pretty well -- except panning doesn't work!
         const controls = new TrackballControls( camera, container )
-        controls.rotateSpeed = 8
+        controls.rotateSpeed = 16
         controls.panSpeed = 100 // pan doesn't seem to be working
         controls.zoomSpeed = 1.2
         controls.mouseButtons.MIDDLE = THREE.MOUSE.LEFT // if I don't do this, there is a problem when clicking the middle button

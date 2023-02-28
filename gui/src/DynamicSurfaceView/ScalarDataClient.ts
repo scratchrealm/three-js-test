@@ -19,6 +19,9 @@ class ScalarDataClient {
             return new Float32Array(d)
         }
     }
+    public get numFrames() {
+        return this.o.numFrames
+    }
     async _fetchData(b1: number, b2: number): Promise<ArrayBuffer | undefined> {
         const i1 = Math.floor(b1 / chunkSize)
         const i2 = Math.floor(b2 / chunkSize)
